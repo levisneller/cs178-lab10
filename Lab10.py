@@ -1,3 +1,8 @@
+# name: Levi Sneller
+# date: 3/4/25
+# description: CS178 Lab 10 - Custom databse
+# proposed score: 5 (out of 5)
+
 # ----- Book Interface Code -----
 import boto3
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
