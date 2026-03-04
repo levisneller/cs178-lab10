@@ -1,7 +1,7 @@
-# name: YOUR NAME HERE
-# date:
+# name: Levi Sneller
+# date: 3/4/25
 # description: Implementation of CRUD operations with DynamoDB — CS178 Lab 10
-# proposed score: 0 (out of 5) -- if I don't change this, I agree to get 0 points.
+# proposed score: 5 (out of 5) -- if I don't change this, I agree to get 0 points.
 
 import boto3
 
@@ -14,13 +14,44 @@ def create_movie():
     Prompt user for a Movie Title.
     Add the movie to the database with the title and an empty Ratings list.
     """
-    print("creating a movie")
+    title = input("What is the movie title? ")
+    table.put_item(
+        Item={
+            "Title": title,
+            "Ratings": []
+        }
+    )
+    print(f"Movie '{title}' added successfully.")
+
+
+def print_movie(movie):
+    title = movie.get("Title", "Unknown Title")
+    year = movie.get("Year", "Unknown Year")
+    ratings = movie.get("Ratings", "No ratings")
+    director = movie.get("Director", "No director listed")
+
+    print(f"  Title  : {title}")
+    print(f"  Year   : {year}")
+    print(f"  Director : {director}")
+    print(f"  Ratings: {ratings}")
+    print()
+
 
 def print_all_movies():
     """
     Display all movies in the database.
+    Scans the entire Movies table and prints each item.
     """
-    print("display all movies")
+    response = table.scan()
+    items = response.get("Items", [])
+
+    if not items:
+        print("No movies found. Make sure your DynamoDB table has data.")
+        return
+
+    print(f"Found {len(items)} movie(s):\n")
+    for movie in items:
+        print_movie(movie)
 
 def update_rating():
     """
